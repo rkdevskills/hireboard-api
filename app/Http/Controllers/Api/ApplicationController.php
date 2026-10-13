@@ -94,12 +94,4 @@ class ApplicationController extends Controller
 
         return new ApplicationResource($application);
     }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
-    }
 }

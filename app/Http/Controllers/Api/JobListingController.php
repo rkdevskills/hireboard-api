@@ -19,9 +19,15 @@ class JobListingController extends Controller
     
         if($user && $user->role === 'employer') {
             $jobListings = JobListing::with('tags','employer')
-                ->where('employer_id',$user->id)
+                ->where('employer_id',$user->id);
+            
+            if ($request->filled('status')) {
+                $jobListings->where('status', $request->status);
+            }
+
+            $jobListings = $jobListings
                 ->orderBy('created_at', 'desc')
-                ->get();
+                ->paginate(20);
 
             return JobListingResource::collection($jobListings);
         } else {
@@ -44,7 +50,7 @@ class JobListingController extends Controller
                 $query->salary($request->salary_min,$request->salary_max);
             }
 
-            return JobListingResource::collection($query->orderBy('created_at', 'desc')->get());
+            return JobListingResource::collection($query->orderBy('created_at', 'desc')->paginate(20));
         }
     }
 
@@ -109,6 +115,10 @@ class JobListingController extends Controller
     {
         $this->authorize('delete', $jobListing);
 
+        if ($jobListing->applications()->exists()) {
+            return response()->json(['message' => 'Cannot delete job listing with existing applications.'], 422);
+        }
+        
         $jobListing->delete();
 
         return response(null, 204);
