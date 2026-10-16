@@ -38,9 +38,6 @@ class ApplicationController extends Controller
      */
     public function store(Request $request)
     {
-        //dd('store method called');
-        //dd($request->all());
-
         $this->authorize('create', Application::class);
 
         $fields = $request->validate([
