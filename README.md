@@ -15,10 +15,10 @@ A RESTful API for a job board platform built with Laravel 12 and Sanctum authent
 - PHPUnit feature tests (12 tests)
 
 ## Tech Stack
-- Laravel 12
+- Laravel 13
 - MySQL
 - Laravel Sanctum
-- PHP 8.2+
+- PHP 8.4+
 
 ## Installation
 
