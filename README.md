@@ -1,5 +1,7 @@
 # HireBoard API
 
+![Laravel CI](https://github.com/rkdevskills/hireboard-api/actions/workflows/laravel.yml/badge.svg)
+
 A RESTful API for a job board platform built with Laravel 12 and Sanctum authentication.
 
 ## Features
@@ -72,3 +74,9 @@ Employer:
 Candidate:
 - email: candidate@test.com
 - password: password
+
+## CI/CD
+- Continuous Integration via GitHub Actions
+- Runs automatically on every push to main
+- PHP 8.4, SQLite in-memory database
+- All 14 tests must pass before merge
