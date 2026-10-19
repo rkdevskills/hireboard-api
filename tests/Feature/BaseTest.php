@@ -7,7 +7,7 @@ use Tests\TestCase;
 use App\Models\User;
 use App\Models\JobListing;
 
-class BaseTest extends TestCase
+abstract class BaseTest extends TestCase
 {
     use RefreshDatabase;
 
