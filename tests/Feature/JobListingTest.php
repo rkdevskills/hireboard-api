@@ -118,4 +118,45 @@ class JobListingTest extends BaseTest
             'title' => 'laravel developer'
         ]);
     }
+
+    public function test_visitor_cannot_view_draft_job(): void
+    {
+        $employer = $this->createEmployer();
+        $job = $this->createJob($employer, ['status' => 'draft']);
+
+        $response = $this->getJson("/api/jobs/{$job->id}");
+
+        $response->assertStatus(404);
+    }
+
+    public function test_visitor_can_view_published_job(): void
+    {
+        $employer = $this->createEmployer();
+        $job = $this->createJob($employer);
+
+        $response = $this->getJson("/api/jobs/{$job->id}");
+        $response->assertStatus(200);
+    }
+
+    public function test_employer_can_view_own_draft_job(): void
+    {
+        $employer = $this->createEmployer();
+        $job = $this->createJob($employer, ['status' => 'draft']);
+
+        $response = $this->actingAs($employer)->getJson("/api/jobs/{$job->id}");
+
+        $response->assertStatus(200);
+    }
+
+    public function test_employer_cannot_view_others_draft_job(): void
+    {
+        $employer = $this->createEmployer();
+        $job = $this->createJob($employer, ['status' => 'draft']);
+
+        $otherEmployer = $this->createEmployer();
+
+        $response = $this->actingAs($otherEmployer)->getJson("/api/jobs/{$job->id}");
+
+        $response->assertStatus(404);
+    }
 }

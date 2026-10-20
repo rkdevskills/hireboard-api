@@ -83,6 +83,16 @@ class JobListingController extends Controller
      */
     public function show(JobListing $jobListing)
     {
+        if($jobListing->status === 'draft') {
+
+            $user = auth('sanctum')->user();
+            
+            if(!$user || $user->role !== 'employer' || 
+            (int) $jobListing->employer_id !==  (int) $user->id ) {
+                abort(404);
+            }
+        }
+            
         return response(new JobListingResource($jobListing->load('tags', 'employer')));
     }
 
